@@ -83,7 +83,7 @@ public:
 
 private:
 
-    size_t find_transition(int &bit) const;
+    size_t find_transition(int& bit) const;
     void set_bit(std::size_t const bit_num, int const bit_value);
     uint64_t get_field(size_t const start, size_t const length) const;
     std::uint16_t calc_crc() const;

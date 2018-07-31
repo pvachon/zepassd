@@ -42,7 +42,7 @@ public:
 
     void process_data(wallclock_t const at);
     size_t get_required_input_samples() const;
-    sample_t *get_sample_buffer() { return m_in_vec; }
+    sample_t* get_sample_buffer() { return m_in_vec; }
     size_t get_fft_len() const { return m_fft_len; }
 
 private:
@@ -51,8 +51,8 @@ private:
     void process_peak(double peak_freq, freq_t peak_bin, sample_t const peak, wallclock_t const at);
 
     std::map<freq_t, zepass::pass::ptr_t> m_passes; //< std::map of passes, by bin index
-    sample_t *m_freq_vec; //< Memory to contain FFT of input signal
-    sample_t *m_in_vec; //< Input sample vector, populated by the application
+    sample_t* m_freq_vec; //< Memory to contain FFT of input signal
+    sample_t* m_in_vec; //< Input sample vector, populated by the application
     freq_t m_centre_freq; //< The centre frequency of all sampling
     freq_t m_sampling_rate; //< The sampling rate, in Hz, of the signal
     size_t m_fft_len; //< The length of the FFT output, in bins

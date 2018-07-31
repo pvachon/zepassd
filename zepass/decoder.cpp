@@ -58,18 +58,18 @@ decoder::decoder(freq_t const centre_freq,
 
     std::cout << "Interval samples: " << m_samp_t_len << " FFT Length: " << m_fft_len << std::endl;
 
-    if (NULL == (m_freq_vec = reinterpret_cast<sample_t *>(fftw_malloc(sizeof(fftw_complex) * m_fft_len)))) {
+    if (NULL == (m_freq_vec = reinterpret_cast<sample_t*>(fftw_malloc(sizeof(fftw_complex) * m_fft_len)))) {
         throw std::bad_alloc();
     }
 
-    if (NULL == (m_in_vec = reinterpret_cast<sample_t *>(fftw_malloc(sizeof(fftw_complex) * m_fft_len)))) {
+    if (NULL == (m_in_vec = reinterpret_cast<sample_t*>(fftw_malloc(sizeof(fftw_complex) * m_fft_len)))) {
         throw std::bad_alloc();
     }
 
     std::cout << "Planning FFT..." << std::endl;
 
-    m_plan = fftw_plan_dft_1d(int(m_fft_len), reinterpret_cast<fftw_complex *>(m_in_vec),
-            reinterpret_cast<fftw_complex *>(m_freq_vec), FFTW_FORWARD, FFTW_MEASURE | FFTW_PRESERVE_INPUT);
+    m_plan = fftw_plan_dft_1d(int(m_fft_len), reinterpret_cast<fftw_complex*>(m_in_vec),
+            reinterpret_cast<fftw_complex*>(m_freq_vec), FFTW_FORWARD, FFTW_MEASURE | FFTW_PRESERVE_INPUT);
 
     std::cout << "FFT planning is done, we are ready to roll." << std::endl;
 }

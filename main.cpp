@@ -138,7 +138,7 @@ int main(int const argc, char const* const argv[])
     std::unique_ptr<usrp::usrp_controller> radio = std::make_unique<usrp::usrp_controller>(device,
             center_freq, tx_port, rx_port, tx_ant, rx_ant, sample_rate, sample_rate,
             tx_gain, rx_gain, interval_len, activation_len, gps_pps);
-    z::sample_t *in_buf = decoder->get_sample_buffer();
+    z::sample_t* in_buf = decoder->get_sample_buffer();
 
     std::cout << "Letting the radio settle..." << std::endl;
 

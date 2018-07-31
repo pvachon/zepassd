@@ -10,16 +10,21 @@ CXXFLAGS=-std=c++14 -g -I. -Wall -Wextra $(DEFINES) $(OFLAGS)
 LIBS=-lfftw3 -lm -lboost_program_options -lboost_system -luhd
 LDFLAGS=$(LIBS)
 
+inc=$(OBJ:%.o=%.d)
+
 TARGET=zepassd
 
 $(TARGET): $(OBJ)
 	$(CXX) -o $(TARGET) $(OBJ) $(LDFLAGS)
 
+-include $(inc)
+
 .cpp.o:
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -MMD -MP -o $@ -c $<
 
 clean:
 	$(RM) $(TARGET)
 	$(RM) $(OBJ)
+	$(RM) $(inc)
 
 .PHONY: clean

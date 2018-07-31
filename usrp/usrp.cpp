@@ -77,8 +77,8 @@ private:
     /// Output pulse to transmit, a sine wave shifted from baseband based on the center
     /// frequency we calculate
     std::vector<std::complex<float>> m_tx_buf;
-    std::vector<std::complex<float> *> m_tx_buff;
-    std::vector<std::complex<double> *> m_rx_buff;
+    std::vector<std::complex<float>*> m_tx_buff;
+    std::vector<std::complex<double>*> m_rx_buff;
 
     size_t m_pulse_samps;
 

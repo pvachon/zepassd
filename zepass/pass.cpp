@@ -37,7 +37,8 @@ std::ostream& operator<<(std::ostream& os, zepass::pass const& p)
 {
     if (p.is_decoded()) {
         std::time_t now = std::time(nullptr);
-        std::tm *utc = std::gmtime(&now);
+        std::tm utc;
+        gmtime_r(&now, &utc);
 
         os << std::dec << "{\"passHeader\":" << p.get_header() <<
             ", \"tagType\":" << p.get_tag_type() <<
@@ -49,12 +50,12 @@ std::ostream& operator<<(std::ostream& os, zepass::pass const& p)
             ", \"nrSamples\":" << p.get_measure_count() <<
             ", \"centerFreqDelta\":"<< p.get_center_freq_delta() <<
             ", \"seenAt\": \"" << std::setfill('0') <<
-                std::setw(4) << utc->tm_year + 1900 << "-" <<
-                std::setw(2) << utc->tm_mon + 1 << "-" <<
-                std::setw(2) << utc->tm_mday << " " <<
-                std::setw(2) << utc->tm_hour << ":" <<
-                std::setw(2) << utc->tm_min << ":" <<
-                std::setw(2) << utc->tm_sec << "\"" << "}";
+                std::setw(4) << utc.tm_year + 1900 << "-" <<
+                std::setw(2) << utc.tm_mon + 1 << "-" <<
+                std::setw(2) << utc.tm_mday << " " <<
+                std::setw(2) << utc.tm_hour << ":" <<
+                std::setw(2) << utc.tm_min << ":" <<
+                std::setw(2) << utc.tm_sec << "\"" << "}";
     } else {
         os << "{\"decoded\":false, \"lastSeenAt\":" << p.last_updated_at() <<
             ", \"nrSamples\":" << p.get_measure_count() <<
