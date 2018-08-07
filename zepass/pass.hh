@@ -108,6 +108,8 @@ private:
     unsigned m_group_id = 0;
     unsigned m_agency_id = 0;
     unsigned m_serial_num = 0;
+
+    std::vector<int> m_norm;
 };
 
 } // end namespace zepass

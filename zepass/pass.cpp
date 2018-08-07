@@ -93,7 +93,8 @@ pass::pass(double const center_freq_hz_delta,
                                         m_nr_acc(0),
                                         m_last_at(0),
                                         m_interval_len(interval_len),
-                                        m_slice_win(m_window_size)
+                                        m_slice_win(m_window_size),
+                                        m_norm(std::vector<int>(samples_per_interval, 0))
 {
     m_samples_per_bit = m_sampling_rate/500000;
     // Pre-calculate the vector to shift to baseband
@@ -159,11 +160,9 @@ std::uint16_t pass::calc_crc() const
 /// Attempt to decode this pass. If successful, returns true.
 bool pass::decode()
 {
-    std::vector<int> norm(m_accumulated.size());
-
     double average = std::accumulate(m_accumulated.begin(), m_accumulated.end(), 0.0,
             [](double a, sample_t b) { return a + std::abs(b); })/double(m_accumulated.size());
-    std::transform(m_accumulated.begin(), m_accumulated.end(), norm.begin(),
+    std::transform(m_accumulated.begin(), m_accumulated.end(), m_norm.begin(),
             [average](sample_t v) { double val = std::abs(v) - average; return val > 0.0 ? 1 : -1; });
 
 #ifdef _DUMP_RUNS
@@ -171,9 +170,9 @@ bool pass::decode()
         cur_sym = 0,
         nr_runs = 0;
 
-    std::cout << "Writing out " << norm.size() << " symbols worth of runs: ";
+    std::cout << "Writing out " << m_norm.size() << " symbols worth of runs: ";
 
-    for (auto i: norm) {
+    for (auto i: m_norm) {
         if (0 == cur_sym) {
             cur_sym = i;
             cur_run = 1;
@@ -200,14 +199,14 @@ bool pass::decode()
     bool found_start = false;
 
 #if defined(_DEBUG_MFM_DECODE)
-    std::cout << "Processing " << norm.size() << " samples." << std::endl;
+    std::cout << "Processing " << m_norm.size() << " samples." << std::endl;
 #endif // defined(_DEBUG_MFM_DECODE)
 
-    while ((sample_id++) < norm.size() && bit_id < 256) {
+    while ((sample_id++) < m_norm.size() && bit_id < 256) {
         int bit = -1;
         size_t offset = 0;
 
-        m_slice_win.push_back(norm[sample_id]);
+        m_slice_win.push_back(m_norm[sample_id]);
 
         if (m_slice_win.size() < m_window_size) {
             // Make sure the window is full
